@@ -1,0 +1,9 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+/settings.py
+.DS_Store
+.gitignore
+.idea/workspace.xml
