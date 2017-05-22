@@ -7,3 +7,5 @@ gen
 .DS_Store
 .gitignore
 .idea/workspace.xml
+geckodriver.log
+settings.pyc

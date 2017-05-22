@@ -9,14 +9,13 @@
 
 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from settings import username, password
+from settings import user, pwd
 
 import time
 import sys
 from pymongo import MongoClient, errors
 from bs4 import BeautifulSoup
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,17 +24,16 @@ sys.setdefaultencoding('utf-8')
 client = MongoClient("localhost", 27017)
 db = client["facebook"]
 
-
 browser = webdriver.Firefox()
 browser.get("http://www.facebook.com")
-
+browser.set_window_size(1024, 768)
 
 username = browser.find_element_by_id("email")
 password = browser.find_element_by_id("pass")
 submit = browser.find_element_by_id("loginbutton")
 
-username.send_keys(username)
-password.send_keys(password)
+username.send_keys(user)
+password.send_keys(pwd)
 
 submit.click()
 
@@ -43,6 +41,9 @@ time.sleep(8)
 
 url = "http://www.facebook.com/search/posts/?q=standingrock%2Cnd%20change%20location"
 url = "https://www.facebook.com/search/str/change+location/keywords_top?filters_rp_location=352987914761281"
+url = "https://www.facebook.com/search/str/EVERYONE++check-in+at+Standing+Rock%2C+ND/keywords_blended_posts"
+# url = "https://www.facebook.com/search/str/calling++check-in+at+Standing+Rock%2C+ND/keywords_blended_posts"
+
 browser.get(url)
 
 
@@ -50,9 +51,6 @@ while len(browser.find_elements_by_xpath('//div[contains(text(), "End of Results
     time.sleep(5)
     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-
-# time.sleep(5)
-# browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
 soup = BeautifulSoup(browser.page_source, 'html5lib')
 items = soup.find_all('div', class_="_401d")
