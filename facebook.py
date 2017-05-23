@@ -11,7 +11,7 @@
 from selenium import webdriver
 from settings import user, pwd
 
-import time
+import time, datetime
 import sys
 from pymongo import MongoClient, errors
 from bs4 import BeautifulSoup
@@ -41,15 +41,24 @@ time.sleep(8)
 
 url = "http://www.facebook.com/search/posts/?q=standingrock%2Cnd%20change%20location"
 url = "https://www.facebook.com/search/str/change+location/keywords_top?filters_rp_location=352987914761281"
-url = "https://www.facebook.com/search/str/EVERYONE++check-in+at+Standing+Rock%2C+ND/keywords_blended_posts"
-# url = "https://www.facebook.com/search/str/calling++check-in+at+Standing+Rock%2C+ND/keywords_blended_posts"
+url = "htkhitps://www.facebook.com/search/str/EVERYONE++check-in+at+Standing+Rock%2C+ND/keywords_blended_posts"
+url = "https://www.facebook.com/search/str/calling++check-in+at+Standing+Rock%2C+ND/keywords_blended_posts"
+# url = 'https://www.facebook.com/search/posts/?q=change+location&ref=top_filter&filters_rp_location=112550722093996'  # others
+# url = 'https://www.facebook.com/search/posts/?q=change+location&ref=top_filter&filters_rp_location=211308325572297' #others
+# url = 'https://www.facebook.com/search/posts/?q=change+location&ref=top_filter&filters_rp_location=352987914761281' # others
+
 
 browser.get(url)
+
+
+start = datetime.datetime.now()
 
 
 while len(browser.find_elements_by_xpath('//div[contains(text(), "End of Results")]')) != 1:
     time.sleep(5)
     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    if int((datetime.datetime.now() - start).seconds / 60) > 60:
+        break
 
 
 soup = BeautifulSoup(browser.page_source, 'html5lib')

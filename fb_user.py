@@ -23,12 +23,11 @@ sys.setdefaultencoding('utf-8')
 client = MongoClient("localhost", 27017)
 db = client["facebook"]
 
-# posts = db.posts.find({"headshot": {"$exists": True}})
 # posts = db.posts.find({"orig_loc": {"$exists": False}})
 posts = db.posts.find({"orig_loc": ""})
 
 
-count =  posts.count()
+count = posts.count()
 living_place_keyword = '/about?section=living'
 recent_place_keyword = '/places_recent'
 
@@ -53,11 +52,16 @@ time.sleep(8)
 
 print count
 
+items = []
+
 for post in posts:
-    user_url = post['user_url']
+    items.append(post['user_url'])
+
+for item in items:
+    user_url = item
     orig_loc = ""
     living_place_url = user_url + living_place_keyword
-    time.sleep(5)
+    time.sleep(3)
     print living_place_url
     browser.get(living_place_url)
     soup = BeautifulSoup(browser.page_source, 'html5lib')
@@ -80,7 +84,7 @@ for post in posts:
         if len(checkin_items) != 0:
             checkin_url = checkin_items[0].attrs["href"]
             orig_loc = checkin_items[0].attrs["title"]
-            time.sleep(5)
+            time.sleep(3)
             browser.get(checkin_url)
             soup = BeautifulSoup(browser.page_source, 'html5lib')
             try:
